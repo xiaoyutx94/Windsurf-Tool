@@ -2,11 +2,13 @@
 
 <div align="center">
 
-**Windsurf 账号管理工具 - 批量注册、自动切换、账号池管理**
+**批量注册、自动切换、账号池管理**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Electron](https://img.shields.io/badge/Electron-27.1.0-blue.svg)](https://www.electronjs.org/)
 [![Platform](https://img.shields.io/badge/Platform-macOS-lightgrey.svg)](https://www.apple.com/macos/)
+
+[简体中文](README.md) | [English](README_EN.md)
 
 [功能特性](#功能特性) • [快速开始](#快速开始) • [使用指南](#使用指南) • [打包说明](#打包说明) • [工作原理](#工作原理) • [Windows适配](#windows适配)
 
@@ -21,7 +23,7 @@
 ✅ **本地邮箱接收** - 基于 IMAP 协议本地接收验证码，无需后端服务器  
 ✅ **账号池管理** - 本地管理账号（增删改查），支持到期提醒  
 ✅ **一键切换账号** - 自动重置配置、清除机器码、完成账号切换  
-✅ **多语言支持** - 支持简体中文、繁体中文、英文  
+✅ **多语言支持** - 支持简体中文、英文  
 
 ---
 
@@ -512,6 +514,19 @@ windsurf-tool/
 ## 许可证
 
 本项目采用 [MIT License](LICENSE) 开源协议。
+
+---
+
+## 社区交流
+
+### QQ 群
+
+欢迎加入 QQ 群交流讨论：
+
+<div align="center">
+  <img src="./IMG_4627.jpeg" alt="QQ群二维码" width="300"/>
+  <p>扫码加入 QQ 群</p>
+</div>
 
 ---
 

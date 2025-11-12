@@ -1,7 +1,7 @@
 {
   "name": "windsurf-account-switcher",
   "version": "1.0.0",
-  "description": "Windsurf-Tool 1.0 - Windsurf账号管理工具",
+  "description": "Windsurf-Tool 账号管理工具 - 批量注册、自动切换、账号池管理",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
