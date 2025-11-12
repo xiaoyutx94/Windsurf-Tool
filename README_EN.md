@@ -38,6 +38,23 @@
 
 ---
 
+## 📸 Screenshots
+
+<div align="center">
+
+### Account Management
+<img src="./screenshot1.png" alt="Account Management Interface" width="800"/>
+
+### Batch Registration
+<img src="./screenshot2.png" alt="Batch Registration Interface" width="800"/>
+
+### Account Switching
+<img src="./screenshot3.png" alt="Account Switching Interface" width="800"/>
+
+</div>
+
+---
+
 ## Quick Start
 
 ### Requirements
