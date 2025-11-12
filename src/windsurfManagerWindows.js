@@ -352,6 +352,71 @@ class WindsurfManagerWindows {
   }
 
   /**
+   * 重置机器标识（旧方法，保留兼容）
+   */
+  async resetMachineIds() {
+    this.log('\n🔧 重置机器标识...');
+    
+    // 生成新的ID
+    const newMachineId = this.generateMachineId();
+    const newSqmId = this.generateSqmId();
+    const newDeviceId = this.generateUUID();
+    const newMachineid = this.generateUUID();
+    
+    this.log(`  新machineId: ${newMachineId}`);
+    this.log(`  新sqmId: ${newSqmId}`);
+    this.log(`  新devDeviceId: ${newDeviceId}`);
+    this.log(`  新machineid: ${newMachineid}`);
+    
+    // 修改 storage.json
+    try {
+      let data;
+      try {
+        const content = await fs.readFile(this.storageJson, 'utf-8');
+        data = JSON.parse(content);
+      } catch (error) {
+        // 文件不存在，创建新的
+        data = {};
+      }
+      
+      // 修改三个字段
+      data['telemetry.machineId'] = newMachineId;
+      data['telemetry.sqmId'] = newSqmId;
+      data['telemetry.devDeviceId'] = newDeviceId;
+      
+      // 清理其他可能的标识字段
+      const keysToRemove = [
+        'backupWorkspaces',
+        'profileAssociations',
+        'windowControlHeight',
+        'lastKnownMenubarData'
+      ];
+      for (const key of keysToRemove) {
+        delete data[key];
+      }
+      
+      // 确保目录存在
+      await fs.mkdir(path.dirname(this.storageJson), { recursive: true });
+      
+      // 写回文件
+      await fs.writeFile(this.storageJson, JSON.stringify(data, null, 4));
+      
+      this.log('  ✓ 已修改: storage.json');
+    } catch (error) {
+      this.log(`  ✗ 修改失败 storage.json: ${error.message}`);
+    }
+    
+    // 修改 machineid 文件
+    try {
+      await fs.mkdir(path.dirname(this.machineidFile), { recursive: true });
+      await fs.writeFile(this.machineidFile, newMachineid + '\n');
+      this.log('  ✓ 已修改: machineid');
+    } catch (error) {
+      this.log(`  ✗ 修改失败 machineid: ${error.message}`);
+    }
+  }
+
+  /**
    * 完整重置 Windsurf
    */
   async fullReset() {
@@ -397,6 +462,31 @@ class WindsurfManagerWindows {
       console.error('错误详情:', error);
       return { success: false, error: error.message };
     }
+  }
+
+  /**
+   * 检测 Windsurf 配置文件路径
+   */
+  async detectConfigPaths() {
+    const results = {
+      appSupport: { exists: false, path: this.paths.appSupport },
+      cache: { exists: false, path: this.paths.cache },
+      userData: { exists: false, path: this.paths.userData },
+      logs: { exists: false, path: this.paths.logs },
+      storageJson: { exists: false, path: this.storageJson },
+      machineidFile: { exists: false, path: this.machineidFile },
+    };
+
+    for (const key in results) {
+      try {
+        await fs.access(results[key].path);
+        results[key].exists = true;
+      } catch (error) {
+        results[key].exists = false;
+      }
+    }
+
+    return results;
   }
 
   /**
@@ -598,6 +688,82 @@ class WindsurfManagerWindows {
       this.log(`⚠️  设置流程出错: ${error.message}`);
       return { success: false, error: error.message };
     }
+  }
+
+  /**
+   * 自动登录 Windsurf（Windows版本）
+   * 流程：
+   * 1. 完整重置
+   * 2. 启动应用
+   * 3. 完成初始设置
+   * 4. 浏览器自动登录（使用 Puppeteer）
+   * 
+   * 注意：浏览器登录部分需要配合 BrowserAutomation 类使用
+   */
+  async autoLogin(email, password) {
+    try {
+      this.log('\n🔐 开始自动登录Windsurf (Windows)...');
+      this.log(`📧 邮箱: ${email}`);
+      
+      // 1. 完整重置
+      this.log('\n========== 步骤1: 完整重置Windsurf ==========');
+      const resetResult = await this.fullReset();
+      if (!resetResult.success) {
+        throw new Error('重置失败: ' + resetResult.error);
+      }
+      await this.sleep(2000);
+      
+      // 2. 启动Windsurf
+      this.log('\n========== 步骤2: 启动Windsurf ==========');
+      await this.launchWindsurf();
+      await this.sleep(5000);
+      
+      // 3. 完成初始设置
+      this.log('\n========== 步骤3: 完成初始设置 ==========');
+      const onboardingResult = await this.completeOnboarding();
+      if (!onboardingResult.success) {
+        this.log('⚠️  初始设置可能未完成，但继续执行');
+      }
+      
+      this.log('\n========== 步骤4: 浏览器登录 ==========');
+      this.log('💡 浏览器应该已经打开登录页面');
+      this.log('💡 请使用 BrowserAutomation 类完成浏览器登录');
+      this.log('💡 或手动在浏览器中完成登录');
+      
+      return {
+        success: true,
+        message: '自动登录流程完成，请在浏览器中完成登录',
+        needsBrowserLogin: true
+      };
+      
+    } catch (error) {
+      this.log(`\n❌ 自动登录失败: ${error.message}`);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * 获取键盘按键码（Windows）
+   * robotjs 使用的是虚拟键码
+   */
+  getKeyCode(key) {
+    const keyCodes = {
+      'enter': 'enter',
+      'return': 'enter',
+      'tab': 'tab',
+      'space': 'space',
+      'escape': 'escape',
+      'backspace': 'backspace',
+      'delete': 'delete',
+      'up': 'up',
+      'down': 'down',
+      'left': 'left',
+      'right': 'right'
+    };
+    return keyCodes[key.toLowerCase()] || key;
   }
 }
 
