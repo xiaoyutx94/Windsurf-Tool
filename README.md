@@ -15,13 +15,13 @@
 
 ### 📥 下载
 
-**最新版本**: [Windsurf-Tool for Mac 1.0](https://github.com/crispvibe/Windsurf-Tool/releases/latest)
+**最新版本**: [Windsurf-Tool 2.0.0](https://github.com/crispvibe/Windsurf-Tool/releases)
 
 | 平台 | 架构 | 下载链接 |
 |------|------|----------|
-| macOS | Intel (x64) | [Windsurf-Tool-1.0.0.dmg](https://github.com/crispvibe/Windsurf-Tool/releases/download/v1.0.0/Windsurf-Tool-1.0.0.dmg) |
-| macOS | Apple Silicon (arm64) | [Windsurf-Tool-1.0.0-arm64.dmg](https://github.com/crispvibe/Windsurf-Tool/releases/download/v1.0.0/Windsurf-Tool-1.0.0-arm64.dmg) |
-| Windows | x64 | 🚧 适配中，预计 2 天内发布 |
+| macOS | Intel (x64) | [Windsurf-Tool-2.0.0.zip](https://github.com/crispvibe/Windsurf-Tool/releases/) |
+| macOS | Apple Silicon (arm64) | [Windsurf-Tool-2.0.0-arm64.zip](https://github.com/crispvibe/Windsurf-Tool/releases/) |
+| Windows | x64 | [Windsurf-Tool-2.0.0-Portable.exe](https://github.com/crispvibe/Windsurf-Tool/releases/)
 
 [功能特性](#功能特性) • [快速开始](#快速开始) • [使用指南](#使用指南) • [打包说明](#打包说明) • [工作原理](#工作原理) • [Windows适配](#windows适配)
 
